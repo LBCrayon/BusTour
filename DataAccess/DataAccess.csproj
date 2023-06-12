@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.5.0" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DAO\" />
+    <Folder Include="DTO\Response\" />
+    <Folder Include="DTO\Request\" />
+    <Folder Include="Repository\" />
+    <Folder Include="Services\" />
+    <Folder Include="DTO\Request\Bus\" />
+    <Folder Include="Utilities\" />
+    <Folder Include="Attributes\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="DTO\Request\Journey\" />
+    <Folder Include="DTO\Request\Medium\" />
+    <Folder Include="DTO\Request\Place\" />
+    <Folder Include="DTO\Request\Surcharge\" />
+    <Folder Include="DTO\Request\Ticket\" />
+    <Folder Include="DTO\Request\Tour\" />
+    <Folder Include="DTO\Request\TourPlace\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessObject\BusinessObject.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="DTO\Request\Bus\" />
+    <None Remove="Utilities\" />
+    <None Remove="Attributes\" />
+    <None Remove="Exceptions\" />
+    <None Remove="DTO\Request\Journey\" />
+    <None Remove="DTO\Request\Medium\" />
+    <None Remove="DTO\Request\Place\" />
+    <None Remove="DTO\Request\Surcharge\" />
+    <None Remove="DTO\Request\Ticket\" />
+    <None Remove="DTO\Request\Tour\" />
+    <None Remove="DTO\Request\TourPlace\" />
+  </ItemGroup>
+</Project>
