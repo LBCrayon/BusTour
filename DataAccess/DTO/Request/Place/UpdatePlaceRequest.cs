@@ -8,7 +8,6 @@ namespace DataAccess.DTO.Request.Place
         public string? Description { get; set; }
         public DateTime? TimeStay { get; set; }
         public int? MediaId { get; set; }
-        public int? TimeLineId { get; set; }
     }
 }
 

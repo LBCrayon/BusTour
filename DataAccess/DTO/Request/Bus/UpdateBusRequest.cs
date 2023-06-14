@@ -6,6 +6,7 @@ namespace DataAccess.DTO.Request.Bus
         public string? Name { get; set; }
         public string? Description { get; set; }
         public int? TotalSeat { get; set; }
+        public int? Status { get; set; }
     }
 }
 

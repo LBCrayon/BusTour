@@ -40,7 +40,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Bus");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
@@ -51,7 +51,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Journey");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
@@ -60,7 +60,7 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<Medium>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Blog).HasMaxLength(100);
 
@@ -71,7 +71,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Place");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
@@ -89,7 +89,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Surcharge");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Date).HasColumnType("datetime");
 
@@ -100,7 +100,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Ticket");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Arrival).HasMaxLength(50);
 
@@ -120,7 +120,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Tour");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
@@ -146,7 +146,7 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("TourPlace");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.HasOne(d => d.Journey)
                     .WithMany(p => p.TourPlaces)

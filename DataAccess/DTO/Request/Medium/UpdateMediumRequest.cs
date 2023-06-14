@@ -3,7 +3,6 @@ namespace DataAccess.DTO.Request.Medium
 {
 	public class UpdateMediumRequest
 	{
-        public int Id { get; set; }
         public string? Video { get; set; }
         public string? Music { get; set; }
         public string? Audio { get; set; }
