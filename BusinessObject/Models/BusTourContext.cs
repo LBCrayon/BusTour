@@ -16,7 +16,8 @@ namespace BusinessObject.Models
         {
         }
 
-        public virtual DbSet<Bus> Buses { get; set; } = null!;
+        public virtual DbSet<Bus> buses { get; set; } = null!;
+        public virtual DbSet<Class> Classes { get; set; } = null!;
         public virtual DbSet<Journey> Journeys { get; set; } = null!;
         public virtual DbSet<Medium> Media { get; set; } = null!;
         public virtual DbSet<Place> Places { get; set; } = null!;
@@ -25,14 +26,14 @@ namespace BusinessObject.Models
         public virtual DbSet<Tour> Tours { get; set; } = null!;
         public virtual DbSet<TourPlace> TourPlaces { get; set; } = null!;
 
-        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //        {
-        //            if (!optionsBuilder.IsConfigured)
-        //            {
-        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        //                optionsBuilder.UseSqlServer("Server=(local);Database=BusTour;uid=sa;pwd=1234567890;Trusted_Connection=True;", x => x.UseNetTopologySuite());
-        //            }
-        //        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=localhost,1433;Database=BusTour;User Id=sa;Password=LeBaopham2001;TrustServerCertificate=True", x => x.UseNetTopologySuite());
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,9 +41,14 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Bus");
 
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
                 entity.Property(e => e.Description).HasMaxLength(100);
+
+                entity.Property(e => e.Name).HasMaxLength(30);
+            });
+
+            modelBuilder.Entity<Class>(entity =>
+            {
+                entity.ToTable("Class");
 
                 entity.Property(e => e.Name).HasMaxLength(30);
             });
@@ -51,8 +57,6 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Journey");
 
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
                 entity.Property(e => e.Description).HasMaxLength(100);
 
                 entity.Property(e => e.Name).HasMaxLength(30);
@@ -60,8 +64,6 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<Medium>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
                 entity.Property(e => e.Blog).HasMaxLength(100);
 
                 entity.Property(e => e.Language).HasMaxLength(20);
@@ -70,8 +72,6 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Place>(entity =>
             {
                 entity.ToTable("Place");
-
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
@@ -89,8 +89,6 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Surcharge");
 
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
                 entity.Property(e => e.Date).HasColumnType("datetime");
 
                 entity.Property(e => e.Name).HasMaxLength(30);
@@ -100,8 +98,6 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Ticket");
 
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
                 entity.Property(e => e.Arrival).HasMaxLength(50);
 
                 entity.Property(e => e.Departure).HasMaxLength(50);
@@ -109,6 +105,11 @@ namespace BusinessObject.Models
                 entity.Property(e => e.EndTime).HasColumnType("datetime");
 
                 entity.Property(e => e.StartTime).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.Tickets)
+                    .HasForeignKey(d => d.ClassId)
+                    .HasConstraintName("FK_Ticket_Class");
 
                 entity.HasOne(d => d.Tour)
                     .WithMany(p => p.Tickets)
@@ -119,8 +120,6 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Tour>(entity =>
             {
                 entity.ToTable("Tour");
-
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
@@ -145,8 +144,6 @@ namespace BusinessObject.Models
             modelBuilder.Entity<TourPlace>(entity =>
             {
                 entity.ToTable("TourPlace");
-
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.HasOne(d => d.Journey)
                     .WithMany(p => p.TourPlaces)
