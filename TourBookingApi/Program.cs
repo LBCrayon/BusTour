@@ -37,7 +37,7 @@ builder.Services.AddScoped<ISurchargeServices, SurchargeServices>();
 builder.Services.AddScoped<ITicketServices, TicketServices>();
 builder.Services.AddScoped<ITourPlaceServices, TourPlaceServices>();
 builder.Services.AddScoped<ITourServices, TourServices>();
-
+builder.Services.AddScoped<IClassServices, ClassServices>();
 var service = builder.Services;
 
 

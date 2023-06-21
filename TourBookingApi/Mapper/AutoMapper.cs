@@ -2,6 +2,7 @@
 using BusinessObject.Models;
 using Castle.Core.Resource;
 using DataAccess.DTO.Request.Bus;
+using DataAccess.DTO.Request.Class;
 using DataAccess.DTO.Request.Journey;
 using DataAccess.DTO.Request.Medium;
 using DataAccess.DTO.Request.Place;
@@ -37,6 +38,11 @@ namespace BusTourApi.Mapper
             CreateMap<Place, PlaceResponse>().ReverseMap();
             CreateMap<CreatePlaceRequest, Place>();
             CreateMap<UpdatePlaceRequest, Place>();
+            #endregion
+            #region Class
+            CreateMap<Class, ClassResponse>().ReverseMap();
+            CreateMap<CreateClassRequest, Class>();
+            CreateMap<UpdateClassRequest, Class>();
             #endregion
             #region Surcharge
             CreateMap<Surcharge, SurchargeResponse>().ReverseMap();

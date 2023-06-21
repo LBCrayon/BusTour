@@ -30,6 +30,7 @@
     <Folder Include="DTO\Request\Ticket\" />
     <Folder Include="DTO\Request\Tour\" />
     <Folder Include="DTO\Request\TourPlace\" />
+    <Folder Include="DTO\Request\Class\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,5 +49,6 @@
     <None Remove="DTO\Request\Ticket\" />
     <None Remove="DTO\Request\Tour\" />
     <None Remove="DTO\Request\TourPlace\" />
+    <None Remove="DTO\Request\Class\" />
   </ItemGroup>
 </Project>
