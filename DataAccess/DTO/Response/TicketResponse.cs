@@ -6,6 +6,7 @@ namespace DataAccess.DTO.Response
 	public class TicketResponse
 	{
         public int Id { get; set; }
+        public int? TicketId { get; set; }
         public double? TotalPrice { get; set; }
         public int? AvailableTicket { get; set; }
         public int? TotalTicket { get; set; }
@@ -16,8 +17,8 @@ namespace DataAccess.DTO.Response
         public int? TourId { get; set; }
         public int? ClassId { get; set; }
 
-        public ClassResponse? Class { get; set; }
-        public TourResponse? Tour { get; set; }
+        // public ClassResponse? Class { get; set; }
+        // public TourResponse? Tour { get; set; }
 
     }
 }

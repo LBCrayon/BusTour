@@ -38,12 +38,14 @@ namespace BusTourApi.Controllers
         }
         
         [HttpGet("{ticketId}")]
-        public async Task<ActionResult<TicketResponse>> GetTicketById
-            ([FromRoute] int ticketId)
+        public async Task<ActionResult<TicketResponse>> GetTicketById([FromRoute] int ticketId)
         {
             try
             {
-                return await _ticketService.GetTicketById(ticketId);
+                
+                var ticket = await _ticketService.GetTicketById(ticketId);
+                ticket.TicketId = ticket.Id;
+                return Ok(ticket);
             }
             catch (ErrorResponse ex)
             {
