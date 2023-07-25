@@ -5,11 +5,12 @@ using BusinessObject.Models;
 using BusinessObject.UnitOfWork;
 using DataAccess.Attributes;
 using DataAccess.DTO.Request;
-using DataAccess.DTO.Request.Bus;
+using DataAccess.DTO.Request.Vehicle;
 using DataAccess.DTO.Request.Ticket;
 using DataAccess.DTO.Response;
 using DataAccess.Exceptions;
 using DataAccess.Utilities;
+using Microsoft.EntityFrameworkCore;
 using static DataAccess.Helpers.ErrorEnum;
 
 namespace DataAccess.Services
@@ -18,6 +19,8 @@ namespace DataAccess.Services
     {
         Task<BaseResponsePagingViewModel<TicketResponse>> GetAllTicket(PagingRequest paging);
         Task<BaseResponseViewModel<TicketResponse>> CreateTicket(CreateTicketRequest request);
+        Task<TicketResponse> GetTicketById(int ticketId);
+
         Task<BaseResponseViewModel<TicketResponse>> UpdateTicket(int ticketId, UpdateTicketRequest request);
     }
 
@@ -50,16 +53,39 @@ namespace DataAccess.Services
             };
         }
 
+        public Task<TicketResponse> GetTicketById(int ticketId)
+        {
+            try
+            {
+                {
+                    var ticket = _unitOfWork.Repository<Ticket>().GetAll()
+                        .Where(t => t.Id == ticketId).Include(t=> t.Tour).Include(c=> c.Class)
+                        .ProjectTo<TicketResponse>(_mapper.ConfigurationProvider)
+                        .FirstOrDefaultAsync();
+                    if (ticket == null)
+                    {
+                        // Ticket with the specified ID not found
+                        throw new ErrorResponse(404,404,"Ticket not found.");
+                    }
+
+                    return ticket;
+                }
+            }
+            catch (ErrorResponse ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<BaseResponsePagingViewModel<TicketResponse>> GetAllTicket(PagingRequest paging)
         {
             try
             {
-
                 {
                     var ticket = _unitOfWork.Repository<Ticket>().GetAll()
-                                            .ProjectTo<TicketResponse>(_mapper.ConfigurationProvider)
-                                            .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
-                                             Constants.DefaultPaging);
+                        .ProjectTo<TicketResponse>(_mapper.ConfigurationProvider)
+                        .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
+                            Constants.DefaultPaging);
                     return new BaseResponsePagingViewModel<TicketResponse>()
                     {
                         Metadata = new PagingsMetadata()
@@ -81,7 +107,7 @@ namespace DataAccess.Services
         public async Task<BaseResponseViewModel<TicketResponse>> UpdateTicket(int ticketId, UpdateTicketRequest request)
         {
             var ticket = _unitOfWork.Repository<Ticket>().GetAll()
-                 .FirstOrDefault(x => x.Id == ticketId);
+                .FirstOrDefault(x => x.Id == ticketId);
 
             if (ticket == null)
                 throw new ErrorResponse(404, (int)BusErrorEnums.NOT_FOUND,
@@ -105,4 +131,3 @@ namespace DataAccess.Services
         }
     }
 }
-

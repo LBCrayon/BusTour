@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace DataAccess.DTO.Response;
 
-	public class BusResponse
+	public class VehicleResponse
 	{
     public int Id { get; set; }
     public string? Name { get; set; }

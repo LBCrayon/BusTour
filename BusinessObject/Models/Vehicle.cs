@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace BusinessObject.Models
 {
-    public partial class Bus
+    public partial class Vehicle
     {
-        public Bus()
+        public Vehicle()
         {
             Tours = new HashSet<Tour>();
         }

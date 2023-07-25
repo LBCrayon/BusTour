@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using DataAccess.DTO.Request;
-using DataAccess.DTO.Request.Bus;
+using DataAccess.DTO.Request.Vehicle;
 using DataAccess.DTO.Response;
 using DataAccess.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -14,11 +14,11 @@ namespace BusTourApi.Controllers
     [ApiController]
     public class BusController : ControllerBase
     {
-        private readonly IBusServices _busService;
+        private readonly IVehicleServices _vehicleService;
 
-        public BusController(IBusServices busService)
+        public BusController(IVehicleServices vehicleService)
         {
-            _busService = busService;
+            _vehicleService = vehicleService;
         }
 
 
@@ -26,12 +26,12 @@ namespace BusTourApi.Controllers
         /// Get list bus
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult<BaseResponsePagingViewModel<BusResponse>>> GetAllBus
-            ([FromQuery] BusResponse request, [FromQuery] PagingRequest paging)
+        public async Task<ActionResult<BaseResponsePagingViewModel<VehicleResponse>>> GetAllVehicle
+            ([FromQuery] VehicleResponse request, [FromQuery] PagingRequest paging)
         {
             try
             {
-                return await _busService.GetAllBus(paging);
+                return await _vehicleService.GetAllVehicle(paging);
             }
             catch (ErrorResponse ex)
             {
@@ -43,12 +43,12 @@ namespace BusTourApi.Controllers
         /// Create Bus
         /// </summary>
         [HttpPost]
-        public async Task<ActionResult<BaseResponseViewModel<BusResponse>>> CreateBus
-            ([FromBody] CreateBusRequest request)
+        public async Task<ActionResult<BaseResponseViewModel<VehicleResponse>>> CreateVehicle
+            ([FromBody] CreateVehicleRequest request)
         {
             try
             {
-                return await _busService.CreateBus(request);
+                return await _vehicleService.CreateVehicle(request);
             }
             catch (ErrorResponse ex)
             {
@@ -59,13 +59,13 @@ namespace BusTourApi.Controllers
         /// <summary>
         /// Update Bus
         /// </summary>
-        [HttpPut("{busId}")]
-        public async Task<ActionResult<BaseResponseViewModel<BusResponse>>> UpdateStore
-            ([FromRoute] int busId, [FromBody] UpdateBusRequest request)
+        [HttpPut("{vehicleId}")]
+        public async Task<ActionResult<BaseResponseViewModel<VehicleResponse>>> UpdateVehicle
+            ([FromRoute] int vehicleId, [FromBody] UpdateVehicleRequest request)
         {
             try
             {
-                return await _busService.UpdateBus(busId, request);
+                return await _vehicleService.UpdateVehicle(vehicleId, request);
             }
             catch (ErrorResponse ex)
             {

@@ -1,7 +1,7 @@
 ﻿using System;
-namespace DataAccess.DTO.Request.Bus
+namespace DataAccess.DTO.Request.Vehicle
 {
-	public class UpdateBusRequest
+	public class UpdateVehicleRequest
 	{
         public string? Name { get; set; }
         public string? Description { get; set; }

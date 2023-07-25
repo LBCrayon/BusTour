@@ -1,7 +1,7 @@
 ﻿using System;
 using BusinessObject.Models;
 using DataAccess.DTO.Request;
-using DataAccess.DTO.Request.Bus;
+using DataAccess.DTO.Request.Vehicle;
 using DataAccess.DTO.Request.Journey;
 using DataAccess.DTO.Response;
 using DataAccess.Exceptions;
@@ -27,7 +27,7 @@ namespace BusTourApi.Controllers
         /// </summary>
         [HttpGet]
         public async Task<ActionResult<BaseResponsePagingViewModel<JourneyResponse>>> GetAllJourney
-            ([FromQuery] BusResponse request, [FromQuery] PagingRequest paging)
+            ([FromQuery] VehicleResponse request, [FromQuery] PagingRequest paging)
         {
             try
             {

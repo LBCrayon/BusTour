@@ -5,7 +5,6 @@ using BusinessObject.Models;
 using BusinessObject.UnitOfWork;
 using DataAccess.Attributes;
 using DataAccess.DTO.Request;
-using DataAccess.DTO.Request.Bus;
 using DataAccess.DTO.Request.Journey;
 using DataAccess.DTO.Response;
 using DataAccess.Exceptions;

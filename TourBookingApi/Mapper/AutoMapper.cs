@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using BusinessObject.Models;
 using Castle.Core.Resource;
-using DataAccess.DTO.Request.Bus;
+using DataAccess.DTO.Request.Vehicle;
 using DataAccess.DTO.Request.Journey;
+using DataAccess.DTO.Request.Class;
 using DataAccess.DTO.Request.Medium;
 using DataAccess.DTO.Request.Place;
 using DataAccess.DTO.Request.Surcharge;
@@ -19,12 +20,12 @@ namespace BusTourApi.Mapper
 
         {
             #region Bus
-            CreateMap<Bus, BusResponse>().ReverseMap();
-            CreateMap<CreateBusRequest, Bus>();
-            CreateMap<UpdateBusRequest, Bus>();
+            CreateMap<Vehicle, VehicleResponse>().ReverseMap();
+            CreateMap<CreateVehicleRequest, Vehicle>();
+            CreateMap<UpdateVehicleRequest, Vehicle>();
             #endregion
             #region Journey
-            CreateMap<Journey, JourneyResponse>().ReverseMap();
+            CreateMap<Journey, ClassResponse>().ReverseMap();
             CreateMap<CreateJourneyRequest, Journey>();
             CreateMap<UpdateJourneyRequest, Journey>();
             #endregion
@@ -57,6 +58,11 @@ namespace BusTourApi.Mapper
             CreateMap<TourPlace, TourPlaceResponse>().ReverseMap();
             CreateMap<CreateTourPlaceRequest, TourPlace>();
             CreateMap<UpdateTourPlaceRequest, TourPlace>();
+            #endregion
+            #region Class
+            CreateMap<Class, ClassResponse>().ReverseMap();
+            CreateMap<CreateClassRequest, Class>();
+            CreateMap<UpdateClassRequest, TourPlace>();
             #endregion
         }
     }

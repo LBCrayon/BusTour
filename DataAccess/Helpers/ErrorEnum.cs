@@ -33,6 +33,19 @@ namespace DataAccess.Helpers
             [Display(Name = "This bus Journey already exsist!")]
             PRODUCT_CODE_EXSIST = 4001,
         }
+        public enum ClassErrorEnums
+        {
+            //404
+            [Display(Name = "Not found this Class!")]
+            NOT_FOUND = 4041,
+
+            [Display(Name = "Not found this Class code!")]
+            NOT_FOUND_CODE = 4042,
+
+            //400
+            [Display(Name = "This bus Class already exsist!")]
+            PRODUCT_CODE_EXSIST = 4001,
+        }
     }
 }
 

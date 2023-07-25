@@ -1,7 +1,7 @@
 ﻿using System;
 using BusinessObject.Models;
 using DataAccess.DTO.Request;
-using DataAccess.DTO.Request.Bus;
+using DataAccess.DTO.Request.Vehicle;
 using DataAccess.DTO.Request.TourPlace;
 using DataAccess.DTO.Response;
 using DataAccess.Exceptions;

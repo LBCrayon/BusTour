@@ -19,7 +19,6 @@
     <Folder Include="DTO\Request\" />
     <Folder Include="Repository\" />
     <Folder Include="Services\" />
-    <Folder Include="DTO\Request\Bus\" />
     <Folder Include="Utilities\" />
     <Folder Include="Attributes\" />
     <Folder Include="Exceptions\" />
@@ -30,6 +29,8 @@
     <Folder Include="DTO\Request\Ticket\" />
     <Folder Include="DTO\Request\Tour\" />
     <Folder Include="DTO\Request\TourPlace\" />
+    <Folder Include="DTO\Request\Vehicle\" />
+    <Folder Include="DTO\Request\Class\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="DTO\Request\Bus\" />
     <None Remove="Utilities\" />
     <None Remove="Attributes\" />
     <None Remove="Exceptions\" />
@@ -48,5 +48,7 @@
     <None Remove="DTO\Request\Ticket\" />
     <None Remove="DTO\Request\Tour\" />
     <None Remove="DTO\Request\TourPlace\" />
+    <None Remove="DTO\Request\Vehicle\" />
+    <None Remove="DTO\Request\Class\" />
   </ItemGroup>
 </Project>

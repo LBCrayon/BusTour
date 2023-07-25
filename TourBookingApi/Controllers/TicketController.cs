@@ -1,6 +1,6 @@
 ﻿using System;
 using DataAccess.DTO.Request;
-using DataAccess.DTO.Request.Bus;
+using DataAccess.DTO.Request.Vehicle;
 using DataAccess.DTO.Request.Ticket;
 using DataAccess.DTO.Response;
 using DataAccess.Exceptions;
@@ -30,6 +30,20 @@ namespace BusTourApi.Controllers
             try
             {
                 return await _ticketService.GetAllTicket(paging);
+            }
+            catch (ErrorResponse ex)
+            {
+                return BadRequest(ex.Error);
+            }
+        }
+        
+        [HttpGet("{ticketId}")]
+        public async Task<ActionResult<TicketResponse>> GetTicketById
+            ([FromRoute] int ticketId)
+        {
+            try
+            {
+                return await _ticketService.GetTicketById(ticketId);
             }
             catch (ErrorResponse ex)
             {

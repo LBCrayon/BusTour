@@ -8,39 +8,39 @@ using DataAccess.DTO.Response;
 using DataAccess.Utilities;
 using DataAccess.Attributes;
 using System.Threading.Tasks;
-using DataAccess.DTO.Request.Bus;
+using DataAccess.DTO.Request.Vehicle;
 using static System.Formats.Asn1.AsnWriter;
 using DataAccess.Exceptions;
 using static DataAccess.Helpers.ErrorEnum;
 
 namespace DataAccess.Services
 {
-    public interface IBusServices
-	{
-        Task<BaseResponsePagingViewModel<BusResponse>> GetAllBus(PagingRequest paging);
-        Task<BaseResponseViewModel<BusResponse>> CreateBus(CreateBusRequest request);
-        Task<BaseResponseViewModel<BusResponse>> UpdateBus(int busId, UpdateBusRequest request);
+    public interface IVehicleServices
+    {
+        Task<BaseResponsePagingViewModel<VehicleResponse>> GetAllVehicle(PagingRequest paging);
+        Task<BaseResponseViewModel<VehicleResponse>> CreateVehicle(CreateVehicleRequest request);
+        Task<BaseResponseViewModel<VehicleResponse>> UpdateVehicle(int busId, UpdateVehicleRequest request);
     }
 
 
-    public class BusServices : IBusServices
-	{
+    public class VehicleServices : IVehicleServices
+    {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public BusServices(IMapper mapper, IUnitOfWork unitOfWork)
+        public VehicleServices(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponseViewModel<BusResponse>> CreateBus(CreateBusRequest request)
+        public async Task<BaseResponseViewModel<VehicleResponse>> CreateVehicle(CreateVehicleRequest request)
         {
-            var bus = _mapper.Map<CreateBusRequest, Bus>(request);
+            var bus = _mapper.Map<CreateVehicleRequest, Vehicle>(request);
 
-            await _unitOfWork.Repository<Bus>().InsertAsync(bus);
+            await _unitOfWork.Repository<Vehicle>().InsertAsync(bus);
             await _unitOfWork.CommitAsync();
-            return new BaseResponseViewModel<BusResponse>()
+            return new BaseResponseViewModel<VehicleResponse>()
             {
                 Status = new StatusViewModel()
                 {
@@ -48,22 +48,22 @@ namespace DataAccess.Services
                     Success = true,
                     ErrorCode = 0
                 },
-                Data = _mapper.Map<BusResponse>(bus)
+                Data = _mapper.Map<VehicleResponse>(bus)
             };
         }
 
-      
-        public async Task<BaseResponsePagingViewModel<BusResponse>> GetAllBus(PagingRequest paging)
+
+        public async Task<BaseResponsePagingViewModel<VehicleResponse>> GetAllVehicle(PagingRequest paging)
         {
             try
             {
 
                 {
-                    var bus = _unitOfWork.Repository<Bus>().GetAll()
-                                            .ProjectTo<BusResponse>(_mapper.ConfigurationProvider)
+                    var bus = _unitOfWork.Repository<Vehicle>().GetAll()
+                                            .ProjectTo<VehicleResponse>(_mapper.ConfigurationProvider)
                                             .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
                                              Constants.DefaultPaging);
-                    return new BaseResponsePagingViewModel<BusResponse>()
+                    return new BaseResponsePagingViewModel<VehicleResponse>()
                     {
                         Metadata = new PagingsMetadata()
                         {
@@ -81,22 +81,22 @@ namespace DataAccess.Services
             }
         }
 
-        public async Task<BaseResponseViewModel<BusResponse>> UpdateBus(int busId, UpdateBusRequest request)
+        public async Task<BaseResponseViewModel<VehicleResponse>> UpdateVehicle(int busId, UpdateVehicleRequest request)
         {
-            var bus = _unitOfWork.Repository<Bus>().GetAll()
+            var bus = _unitOfWork.Repository<Vehicle>().GetAll()
                  .FirstOrDefault(x => x.Id == busId);
 
             if (bus == null)
                 throw new ErrorResponse(404, (int)BusErrorEnums.NOT_FOUND,
                     BusErrorEnums.NOT_FOUND.GetDisplayName());
 
-            var updateBus = _mapper.Map<UpdateBusRequest, Bus>(request, bus);
+            var updateBus = _mapper.Map<UpdateVehicleRequest, Vehicle>(request, bus);
 
 
-            await _unitOfWork.Repository<Bus>().UpdateDetached(updateBus);
+            await _unitOfWork.Repository<Vehicle>().UpdateDetached(updateBus);
             await _unitOfWork.CommitAsync();
 
-            return new BaseResponseViewModel<BusResponse>()
+            return new BaseResponseViewModel<VehicleResponse>()
             {
                 Status = new StatusViewModel()
                 {

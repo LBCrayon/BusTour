@@ -29,7 +29,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IBusServices, BusServices>();
+builder.Services.AddScoped<IVehicleServices, VehicleServices>();
 builder.Services.AddScoped<IJourneyServices, JourneyServices>();
 builder.Services.AddScoped<IMediumServices, MediumServices>();
 builder.Services.AddScoped<IPlaceServices, PlaceServices>();
@@ -37,6 +37,7 @@ builder.Services.AddScoped<ISurchargeServices, SurchargeServices>();
 builder.Services.AddScoped<ITicketServices, TicketServices>();
 builder.Services.AddScoped<ITourPlaceServices, TourPlaceServices>();
 builder.Services.AddScoped<ITourServices, TourServices>();
+builder.Services.AddScoped<IClassServices, ClassServices>();
 
 var service = builder.Services;
 
