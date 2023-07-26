@@ -9,11 +9,11 @@ using DataAccess.DTO.Request.Journey;
 using DataAccess.DTO.Response;
 using DataAccess.Exceptions;
 using DataAccess.Utilities;
+using Microsoft.EntityFrameworkCore;
 using static DataAccess.Helpers.ErrorEnum;
 
 namespace DataAccess.Services
 {
-
     public interface IJourneyServices
     {
         Task<BaseResponsePagingViewModel<JourneyResponse>> GetAllJourney(PagingRequest paging);
@@ -36,9 +36,16 @@ namespace DataAccess.Services
         public async Task<BaseResponseViewModel<JourneyResponse>> CreateJourney(CreateJourneyRequest request)
         {
             var journey = _mapper.Map<CreateJourneyRequest, Journey>(request);
-
+            foreach (var placeId in request.PlaceIds)
+            {
+                var tourPlace = new TourPlace();
+                tourPlace.JourneyId = journey.Id;
+                tourPlace.PlaceId = placeId;
+                journey.TourPlaces.Add(tourPlace);
+            }
             await _unitOfWork.Repository<Journey>().InsertAsync(journey);
             await _unitOfWork.CommitAsync();
+            
             return new BaseResponseViewModel<JourneyResponse>()
             {
                 Status = new StatusViewModel()
@@ -47,7 +54,6 @@ namespace DataAccess.Services
                     Success = true,
                     ErrorCode = 0
                 },
-                Data = _mapper.Map<JourneyResponse>(journey)
             };
         }
 
@@ -55,12 +61,12 @@ namespace DataAccess.Services
         {
             try
             {
-
                 {
                     var journey = _unitOfWork.Repository<Journey>().GetAll()
-                                            .ProjectTo<JourneyResponse>(_mapper.ConfigurationProvider)
-                                            .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
-                                             Constants.DefaultPaging);
+                        .Include(t=> t.TourPlaces)
+                        .ProjectTo<JourneyResponse>(_mapper.ConfigurationProvider)
+                        .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
+                            Constants.DefaultPaging);
                     return new BaseResponsePagingViewModel<JourneyResponse>()
                     {
                         Metadata = new PagingsMetadata()
@@ -79,10 +85,11 @@ namespace DataAccess.Services
             }
         }
 
-        public async Task<BaseResponseViewModel<JourneyResponse>> UpdateJourney(int journeyId, UpdateJourneyRequest request)
+        public async Task<BaseResponseViewModel<JourneyResponse>> UpdateJourney(int journeyId,
+            UpdateJourneyRequest request)
         {
             var journey = _unitOfWork.Repository<Journey>().GetAll()
-                   .FirstOrDefault(x => x.Id == journeyId);
+                .FirstOrDefault(x => x.Id == journeyId);
 
             if (journey == null)
                 throw new ErrorResponse(404, (int)JourneyErrorEnums.NOT_FOUND,
@@ -104,8 +111,5 @@ namespace DataAccess.Services
                 }
             };
         }
-
-
     }
 }
-

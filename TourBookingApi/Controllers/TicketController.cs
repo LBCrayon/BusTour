@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusTourApi.Controllers
 {
-    [Route(Helpers.SettingVersionApi.ApiVersion)]
+    [Route("api/ticket")]
     [ApiController]
     public class TicketController : ControllerBase
     {

@@ -10,17 +10,23 @@ using DataAccess.DTO.Request.Place;
 using DataAccess.DTO.Response;
 using DataAccess.Exceptions;
 using DataAccess.Utilities;
+using Microsoft.EntityFrameworkCore;
 using static DataAccess.Helpers.ErrorEnum;
 
 namespace DataAccess.Services
 {
-
     public interface IPlaceServices
     {
         Task<BaseResponsePagingViewModel<PlaceResponse>> GetAllPlace(PagingRequest paging);
         Task<BaseResponseViewModel<PlaceResponse>> CreatePlace(CreatePlaceRequest request);
+
+        Task<PlaceResponse> GetPlaceById(int placeId);
+
         Task<BaseResponseViewModel<PlaceResponse>> UpdatePlace(int placeId, UpdatePlaceRequest request);
+
+        Task<BaseResponseViewModel<PlaceResponse>> DeletePlace(int placeId);
     }
+
     public class PlaceServices : IPlaceServices
     {
         private readonly IMapper _mapper;
@@ -51,16 +57,39 @@ namespace DataAccess.Services
             };
         }
 
+        public Task<PlaceResponse> GetPlaceById(int placeId)
+        {
+            try
+            {
+                {
+                    var place = _unitOfWork.Repository<Place>().GetAll()
+                        .Where(t => t.Id == placeId).Include(t => t.Media)
+                        .ProjectTo<PlaceResponse>(_mapper.ConfigurationProvider)
+                        .FirstOrDefaultAsync();
+                    if (place == null)
+                    {
+                        // Ticket with the specified ID not found
+                        throw new ErrorResponse(404, 404, "Ticket not found.");
+                    }
+
+                    return place;
+                }
+            }
+            catch (ErrorResponse ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<BaseResponsePagingViewModel<PlaceResponse>> GetAllPlace(PagingRequest paging)
         {
             try
             {
-
                 {
                     var place = _unitOfWork.Repository<Place>().GetAll()
-                                            .ProjectTo<PlaceResponse>(_mapper.ConfigurationProvider)
-                                            .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
-                                             Constants.DefaultPaging);
+                        .ProjectTo<PlaceResponse>(_mapper.ConfigurationProvider)
+                        .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
+                            Constants.DefaultPaging);
                     return new BaseResponsePagingViewModel<PlaceResponse>()
                     {
                         Metadata = new PagingsMetadata()
@@ -104,6 +133,27 @@ namespace DataAccess.Services
                 }
             };
         }
+
+        public async Task<BaseResponseViewModel<PlaceResponse>> DeletePlace(int placeId)
+        {
+            var place = _unitOfWork.Repository<Place>().GetById(placeId).Result;
+
+            if (place == null)
+                throw new ErrorResponse(404, (int)BusErrorEnums.NOT_FOUND,
+                    BusErrorEnums.NOT_FOUND.GetDisplayName());
+
+            _unitOfWork.Repository<Place>().Delete(place);
+            await _unitOfWork.CommitAsync();
+
+            return new BaseResponseViewModel<PlaceResponse>()
+            {
+                Status = new StatusViewModel()
+                {
+                    Message = "Success",
+                    Success = true,
+                    ErrorCode = 200
+                }
+            };
+        }
     }
 }
-

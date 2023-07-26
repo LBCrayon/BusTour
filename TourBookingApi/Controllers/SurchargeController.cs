@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusTourApi.Controllers
 {
-    [Route(Helpers.SettingVersionApi.ApiVersion)]
+    [Route("api/surcharge")]
     [ApiController]
     public class SurchargeController : ControllerBase
     {
@@ -58,13 +58,27 @@ namespace BusTourApi.Controllers
         /// <summary>
         /// Update Bus
         /// </summary>
-        [HttpPut("{busId}")]
+        [HttpPut("{surchargeId}")]
         public async Task<ActionResult<BaseResponseViewModel<SurchargeResponse>>> UpdateSurcharge
             ([FromRoute] int surchargeId, [FromBody] UpdateSurchargeRequest request)
         {
             try
             {
                 return await _surchargeService.UpdateSurcharge(surchargeId, request);
+            }
+            catch (ErrorResponse ex)
+            {
+                return BadRequest(ex.Error);
+            }
+        }
+        
+        [HttpPut("{surchargeId}")]
+        public async Task<ActionResult<BaseResponseViewModel<SurchargeResponse>>> DeleteSurcharge
+            ([FromRoute] int surchargeId, [FromBody] UpdateSurchargeRequest request)
+        {
+            try
+            {
+                return await _surchargeService.DeleteSurcharge(surchargeId);
             }
             catch (ErrorResponse ex)
             {

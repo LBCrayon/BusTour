@@ -1,4 +1,6 @@
 ﻿using System;
+using BusinessObject.Models;
+
 namespace DataAccess.DTO.Response
 {
     public class ClassResponse

@@ -14,13 +14,15 @@ using static DataAccess.Helpers.ErrorEnum;
 
 namespace DataAccess.Services
 {
-
     public interface IMediumServices
     {
         Task<BaseResponsePagingViewModel<MediumResponse>> GetAllMedium(PagingRequest paging);
         Task<BaseResponseViewModel<MediumResponse>> CreateMedium(CreateMediumRequest request);
         Task<BaseResponseViewModel<MediumResponse>> UpdateMedium(int mediumId, UpdateMediumRequest request);
+
+        Task<BaseResponseViewModel<MediumResponse>> DeleteMedia(int mediumId);
     }
+
     public class MediumServices : IMediumServices
     {
         private readonly IMapper _mapper;
@@ -54,12 +56,11 @@ namespace DataAccess.Services
         {
             try
             {
-
                 {
                     var journey = _unitOfWork.Repository<Medium>().GetAll()
-                                            .ProjectTo<MediumResponse>(_mapper.ConfigurationProvider)
-                                            .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
-                                             Constants.DefaultPaging);
+                        .ProjectTo<MediumResponse>(_mapper.ConfigurationProvider)
+                        .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
+                            Constants.DefaultPaging);
                     return new BaseResponsePagingViewModel<MediumResponse>()
                     {
                         Metadata = new PagingsMetadata()
@@ -81,7 +82,7 @@ namespace DataAccess.Services
         public async Task<BaseResponseViewModel<MediumResponse>> UpdateMedium(int mediumId, UpdateMediumRequest request)
         {
             var medium = _unitOfWork.Repository<Medium>().GetAll()
-         .FirstOrDefault(x => x.Id == mediumId);
+                .FirstOrDefault(x => x.Id == mediumId);
 
             if (medium == null)
                 throw new ErrorResponse(404, (int)JourneyErrorEnums.NOT_FOUND,
@@ -103,7 +104,27 @@ namespace DataAccess.Services
                 }
             };
         }
-       
-}
-}
 
+        public async Task<BaseResponseViewModel<MediumResponse>> DeleteMedia(int mediumId)
+        {
+            var medium = _unitOfWork.Repository<Medium>().GetById(mediumId).Result;
+
+            if (medium == null)
+                throw new ErrorResponse(404, (int)JourneyErrorEnums.NOT_FOUND,
+                    JourneyErrorEnums.NOT_FOUND.GetDisplayName());
+
+            _unitOfWork.Repository<Medium>().Delete(medium);
+            await _unitOfWork.CommitAsync();
+
+            return new BaseResponseViewModel<MediumResponse>()
+            {
+                Status = new StatusViewModel()
+                {
+                    Message = "Success",
+                    Success = true,
+                    ErrorCode = 200
+                }
+            };
+        }
+    }
+}

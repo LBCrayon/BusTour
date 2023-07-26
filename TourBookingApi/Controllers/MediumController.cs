@@ -9,16 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusTourApi.Controllers
 {
-    [Route(Helpers.SettingVersionApi.ApiVersion)]
+    [Route("api/media")]
     [ApiController]
-    public class MediumController : ControllerBase
+    public class MediaController : ControllerBase
     {
         private readonly IMediumServices _mediumService;
 
-        public MediumController(IMediumServices mediumService)
+        public MediaController(IMediumServices mediumService)
         {
             _mediumService = mediumService;
         }
+
         /// <summary>
         /// Get list bus
         /// </summary>
@@ -56,13 +57,13 @@ namespace BusTourApi.Controllers
         /// <summary>
         /// Update Bus
         /// </summary>
-        [HttpPut("{mediumId}")]
+        [HttpPut("{mediaId}")]
         public async Task<ActionResult<BaseResponseViewModel<MediumResponse>>> UpdateMedium
-            ([FromRoute] int mediumId, [FromBody] UpdateMediumRequest request)
+            ([FromRoute] int mediaId, [FromBody] UpdateMediumRequest request)
         {
             try
             {
-                return await _mediumService.UpdateMedium(mediumId, request);
+                return await _mediumService.UpdateMedium(mediaId, request);
             }
             catch (ErrorResponse ex)
             {
@@ -70,6 +71,18 @@ namespace BusTourApi.Controllers
             }
         }
 
+        [HttpDelete("{mediaId}")]
+        public async Task<ActionResult<BaseResponseViewModel<MediumResponse>>> DeleteMedium
+            ([FromRoute] int mediumId)
+        {
+            try
+            {
+                return await _mediumService.DeleteMedia(mediumId);
+            }
+            catch (ErrorResponse ex)
+            {
+                return BadRequest(ex.Error);
+            }
+        }
     }
 }
-

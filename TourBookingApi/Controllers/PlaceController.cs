@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusTourApi.Controllers
 {
-    [Route(Helpers.SettingVersionApi.ApiVersion)]
+    [Route("api/place")]
     [ApiController]
     public class PlaceController : ControllerBase
     {
@@ -31,6 +31,20 @@ namespace BusTourApi.Controllers
             try
             {
                 return await _placeService.GetAllPlace(paging);
+            }
+            catch (ErrorResponse ex)
+            {
+                return BadRequest(ex.Error);
+            }
+        }
+
+        [HttpGet("{placeId}")]
+        public async Task<ActionResult<PlaceResponse>> GetPlaceById
+            ([FromRoute] int placeId)
+        {
+            try
+            {
+                return await _placeService.GetPlaceById(placeId);
             }
             catch (ErrorResponse ex)
             {
@@ -72,6 +86,18 @@ namespace BusTourApi.Controllers
             }
         }
 
+        [HttpDelete("{placeId}")]
+        public async Task<ActionResult<BaseResponseViewModel<PlaceResponse>>> DeletePlace
+            ([FromRoute] int placeId)
+        {
+            try
+            {
+                return await _placeService.DeletePlace(placeId);
+            }
+            catch (ErrorResponse ex)
+            {
+                return BadRequest(ex.Error);
+            }
+        }
     }
 }
-

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusTourApi.Controllers
 {
-        [Route(Helpers.SettingVersionApi.ApiVersion)]
+        [Route("api/journey")]
         [ApiController]
         public class JourneyController : ControllerBase
         {

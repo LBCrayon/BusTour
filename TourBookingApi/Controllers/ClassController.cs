@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusTourApi.Controllers
 {
-    [Route(Helpers.SettingVersionApi.ApiVersion)]
+    [Route("api/class")]
     [ApiController]
     public class ClassController:ControllerBase
 	{
@@ -25,6 +25,20 @@ namespace BusTourApi.Controllers
             try
             {
                 return await _classService.GetAllClass(paging);
+            }
+            catch (ErrorResponse ex)
+            {
+                return BadRequest(ex.Error);
+            }
+        }
+        
+        [HttpGet("{classId}")]
+        public async Task<ActionResult<BaseResponseViewModel<ClassResponse>>> GetClassById
+            ([FromRoute] int classId)
+        {
+            try
+            {
+                return await _classService.GetClassById(classId);
             }
             catch (ErrorResponse ex)
             {
@@ -52,13 +66,27 @@ namespace BusTourApi.Controllers
         /// <summary>
         /// Update Bus
         /// </summary>
-        [HttpPut("{busId}")]
+        [HttpPut("{classId}")]
         public async Task<ActionResult<BaseResponseViewModel<ClassResponse>>> UpdateClass
             ([FromRoute] int classId, [FromBody] UpdateClassRequest request)
         {
             try
             {
                 return await _classService.UpdateClass(classId, request);
+            }
+            catch (ErrorResponse ex)
+            {
+                return BadRequest(ex.Error);
+            }
+        }
+        
+        [HttpDelete("{classId}")]
+        public async Task<ActionResult<BaseResponseViewModel<ClassResponse>>> DeleteClass
+            ([FromRoute] int classId)
+        {
+            try
+            {
+                return await _classService.DeleteClass(classId);
             }
             catch (ErrorResponse ex)
             {

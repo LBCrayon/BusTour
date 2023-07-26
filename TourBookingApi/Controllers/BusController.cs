@@ -10,7 +10,7 @@ using NTQ.Sdk.Core.Filters;
 
 namespace BusTourApi.Controllers
 {
-    [Route(Helpers.SettingVersionApi.ApiVersion)]
+    [Route("api/bus")]
     [ApiController]
     public class BusController : ControllerBase
     {
@@ -32,6 +32,20 @@ namespace BusTourApi.Controllers
             try
             {
                 return await _vehicleService.GetAllVehicle(paging);
+            }
+            catch (ErrorResponse ex)
+            {
+                return BadRequest(ex.Error);
+            }
+        }
+        
+        [HttpGet("{vehicleId}")]
+        public async Task<ActionResult<BaseResponseViewModel<VehicleResponse>>> GetVehicleById
+            ([FromRoute] int vehicleId)
+        {
+            try
+            {
+                return await _vehicleService.GetVehicleById(vehicleId);
             }
             catch (ErrorResponse ex)
             {
@@ -66,6 +80,20 @@ namespace BusTourApi.Controllers
             try
             {
                 return await _vehicleService.UpdateVehicle(vehicleId, request);
+            }
+            catch (ErrorResponse ex)
+            {
+                return BadRequest(ex.Error);
+            }
+        }
+        
+        [HttpDelete("{vehicleId}")]
+        public async Task<ActionResult<BaseResponseViewModel<VehicleResponse>>> DeleteVehicle
+            ([FromRoute] int vehicleId)
+        {
+            try
+            {
+                return await _vehicleService.DeleteVehicle(vehicleId);
             }
             catch (ErrorResponse ex)
             {

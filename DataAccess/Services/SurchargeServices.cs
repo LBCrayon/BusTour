@@ -20,6 +20,9 @@ namespace DataAccess.Services
         Task<BaseResponsePagingViewModel<SurchargeResponse>> GetAllSurcharge(PagingRequest paging);
         Task<BaseResponseViewModel<SurchargeResponse>> CreateSurcharge(CreateSurchargeRequest request);
         Task<BaseResponseViewModel<SurchargeResponse>> UpdateSurcharge(int surchargeId, UpdateSurchargeRequest request);
+        
+        Task<BaseResponseViewModel<SurchargeResponse>> DeleteSurcharge(int surchargeId);
+
     }
 
     public class SurchargeServices : ISurchargeServices
@@ -101,6 +104,28 @@ namespace DataAccess.Services
                     Message = "Success",
                     Success = true,
                     ErrorCode = 0
+                }
+            };
+        }
+
+        public async Task<BaseResponseViewModel<SurchargeResponse>> DeleteSurcharge(int surchargeId)
+        {
+            var surcharge = _unitOfWork.Repository<Surcharge>().GetById(surchargeId).Result;
+
+            if (surcharge == null)
+                throw new ErrorResponse(404, (int)BusErrorEnums.NOT_FOUND,
+                    BusErrorEnums.NOT_FOUND.GetDisplayName());
+
+            _unitOfWork.Repository<Surcharge>().Delete(surcharge);
+            await _unitOfWork.CommitAsync();
+
+            return new BaseResponseViewModel<SurchargeResponse>()
+            {
+                Status = new StatusViewModel()
+                {
+                    Message = "Success",
+                    Success = true,
+                    ErrorCode = 200
                 }
             };
         }

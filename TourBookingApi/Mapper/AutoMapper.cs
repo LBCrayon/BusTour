@@ -14,55 +14,83 @@ using DataAccess.DTO.Response;
 
 namespace BusTourApi.Mapper
 {
-    public class AutoMapperProfile: Profile
+    public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
 
         {
             #region Bus
+
             CreateMap<Vehicle, VehicleResponse>().ReverseMap();
             CreateMap<CreateVehicleRequest, Vehicle>();
             CreateMap<UpdateVehicleRequest, Vehicle>();
+
             #endregion
+
             #region Journey
-            CreateMap<Journey, ClassResponse>().ReverseMap();
+
+            CreateMap<Journey, JourneyResponse>()
+                .ForMember(o => o.Places,
+                    b => b.MapFrom(z => z.TourPlaces.Select(x => x.Place)));
             CreateMap<CreateJourneyRequest, Journey>();
             CreateMap<UpdateJourneyRequest, Journey>();
+
             #endregion
+
             #region Medium
+
             CreateMap<Medium, MediumResponse>().ReverseMap();
             CreateMap<CreateMediumRequest, Medium>();
             CreateMap<UpdateMediumRequest, Medium>();
+
             #endregion
+
             #region Place
+
             CreateMap<Place, PlaceResponse>().ReverseMap();
             CreateMap<CreatePlaceRequest, Place>();
             CreateMap<UpdatePlaceRequest, Place>();
+
             #endregion
+
             #region Surcharge
+
             CreateMap<Surcharge, SurchargeResponse>().ReverseMap();
             CreateMap<CreateSurchargeRequest, Surcharge>();
             CreateMap<UpdateSurchargeRequest, Surcharge>();
+
             #endregion
+
             #region Ticket
+
             CreateMap<Ticket, TicketResponse>().ReverseMap();
             CreateMap<CreateTicketRequest, Ticket>();
             CreateMap<UpdateTicketRequest, Ticket>();
+
             #endregion
+
             #region Tour
+
             CreateMap<Tour, TourResponse>().ReverseMap();
             CreateMap<CreateTourRequest, Tour>();
             CreateMap<UpdateTourRequest, Tour>();
+
             #endregion
+
             #region TourPlace
+
             CreateMap<TourPlace, TourPlaceResponse>().ReverseMap();
             CreateMap<CreateTourPlaceRequest, TourPlace>();
             CreateMap<UpdateTourPlaceRequest, TourPlace>();
+
             #endregion
+
             #region Class
+
             CreateMap<Class, ClassResponse>().ReverseMap();
             CreateMap<CreateClassRequest, Class>();
             CreateMap<UpdateClassRequest, TourPlace>();
+
             #endregion
         }
     }
