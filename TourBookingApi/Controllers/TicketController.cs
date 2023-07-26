@@ -42,7 +42,6 @@ namespace BusTourApi.Controllers
         {
             try
             {
-                
                 var ticket = await _ticketService.GetTicketById(ticketId);
                 ticket.TicketId = ticket.Id;
                 return Ok(ticket);

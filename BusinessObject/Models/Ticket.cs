@@ -8,7 +8,7 @@ namespace BusinessObject.Models
         public int Id { get; set; }
         public double? TotalPrice { get; set; }
         public int? AvailableTicket { get; set; }
-        public int? UnitPrice { get; set; }
+        public double? UnitPrice { get; set; }
         public int? TotalTicket { get; set; }
         public string? Departure { get; set; }
         public string? Arrival { get; set; }

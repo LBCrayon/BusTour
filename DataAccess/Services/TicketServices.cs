@@ -37,7 +37,24 @@ namespace DataAccess.Services
 
         public async Task<BaseResponseViewModel<TicketResponse>> CreateTicket(CreateTicketRequest request)
         {
-            var ticket = _mapper.Map<CreateTicketRequest, Ticket>(request);
+            var tour = _unitOfWork.Repository<Tour>().GetAll().FirstOrDefault(x => x.Id == request.TourId);
+            var clas = _unitOfWork.Repository<Class>().GetAll().FirstOrDefault(x => x.Id == request.ClassId);;
+            if (tour == null || clas == null)
+            {
+                throw new ErrorResponse(404, 404, "tour or class not found");
+            }
+
+            var ticket = new Ticket();
+            ticket.TotalPrice = request.UnitPrice + tour.TotalPrice + clas.Price;
+            ticket.TotalTicket = (int)clas.Amount;
+            ticket.UnitPrice = request.UnitPrice;
+            ticket.Arrival = request.Arrival;
+            ticket.Departure = request.Departure;
+            ticket.StartTime = request.StartTime;
+            ticket.EndTime = request.EndTime;
+            ticket.AvailableTicket = ticket.TotalTicket;
+            ticket.TourId = request.TourId;
+            ticket.ClassId = request.ClassId;
 
             await _unitOfWork.Repository<Ticket>().InsertAsync(ticket);
             await _unitOfWork.CommitAsync();
@@ -59,13 +76,13 @@ namespace DataAccess.Services
             {
                 {
                     var ticket = _unitOfWork.Repository<Ticket>().GetAll()
-                        .Where(t => t.Id == ticketId).Include(t=> t.Tour).Include(c=> c.Class)
+                        .Where(t => t.Id == ticketId).Include(t => t.Tour).Include(c => c.Class)
                         .ProjectTo<TicketResponse>(_mapper.ConfigurationProvider)
                         .FirstOrDefaultAsync();
                     if (ticket == null)
                     {
                         // Ticket with the specified ID not found
-                        throw new ErrorResponse(404,404,"Ticket not found.");
+                        throw new ErrorResponse(404, 404, "Ticket not found.");
                     }
 
                     return ticket;
