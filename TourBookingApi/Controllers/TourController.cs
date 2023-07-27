@@ -38,6 +38,8 @@ namespace BusTourApi.Controllers
                 return BadRequest(ex.Error);
             }
         }
+        
+     
 
         /// <summary>
         /// Create Bus

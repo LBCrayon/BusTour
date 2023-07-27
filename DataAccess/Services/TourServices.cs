@@ -19,7 +19,9 @@ namespace DataAccess.Services
         Task<BaseResponsePagingViewModel<TourResponse>> GetAllTour(PagingRequest paging);
         Task<BaseResponseViewModel<TourResponse>> CreateTour(CreateTourRequest request);
         Task<BaseResponseViewModel<TourResponse>> UpdateTour(int tourId, UpdateTourRequest request);
+ 
     }
+
     public class TourServices : ITourServices
     {
         private readonly IMapper _mapper;
@@ -53,12 +55,11 @@ namespace DataAccess.Services
         {
             try
             {
-
                 {
                     var tour = _unitOfWork.Repository<Tour>().GetAll()
-                                            .ProjectTo<TourResponse>(_mapper.ConfigurationProvider)
-                                            .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
-                                             Constants.DefaultPaging);
+                        .ProjectTo<TourResponse>(_mapper.ConfigurationProvider)
+                        .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
+                            Constants.DefaultPaging);
                     return new BaseResponsePagingViewModel<TourResponse>()
                     {
                         Metadata = new PagingsMetadata()
@@ -80,7 +81,7 @@ namespace DataAccess.Services
         public async Task<BaseResponseViewModel<TourResponse>> UpdateTour(int tourId, UpdateTourRequest request)
         {
             var tour = _unitOfWork.Repository<Tour>().GetAll()
-                 .FirstOrDefault(x => x.Id == tourId);
+                .FirstOrDefault(x => x.Id == tourId);
 
             if (tour == null)
                 throw new ErrorResponse(404, (int)BusErrorEnums.NOT_FOUND,
@@ -102,6 +103,12 @@ namespace DataAccess.Services
                 }
             };
         }
+
+     
+   
+
+    
+
+     
     }
 }
-

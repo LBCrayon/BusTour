@@ -36,7 +36,7 @@ namespace BusTourApi.Controllers
                 return BadRequest(ex.Error);
             }
         }
-        
+
         [HttpGet("{ticketId}")]
         public async Task<ActionResult<TicketResponse>> GetTicketById([FromRoute] int ticketId)
         {
@@ -45,6 +45,23 @@ namespace BusTourApi.Controllers
                 var ticket = await _ticketService.GetTicketById(ticketId);
                 ticket.TicketId = ticket.Id;
                 return Ok(ticket);
+            }
+            catch (ErrorResponse ex)
+            {
+                return BadRequest(ex.Error);
+            }
+        }
+
+        /// <summary>
+        /// Get list bus
+        /// </summary>
+        [HttpGet("{tourId}")]
+        public async Task<ActionResult<BaseResponsePagingViewModel<TicketResponse>>> GetTicketByTourId
+            ([FromRoute] int tourId, [FromQuery] PagingRequest paging)
+        {
+            try
+            {
+                return await _ticketService.GetTicketByTourId(tourId, paging);
             }
             catch (ErrorResponse ex)
             {
@@ -87,4 +104,3 @@ namespace BusTourApi.Controllers
         }
     }
 }
-

@@ -22,6 +22,7 @@ namespace DataAccess.Services
         Task<TicketResponse> GetTicketById(int ticketId);
 
         Task<BaseResponseViewModel<TicketResponse>> UpdateTicket(int ticketId, UpdateTicketRequest request);
+        Task<BaseResponsePagingViewModel<TicketResponse>> GetTicketByTourId(int tourId, PagingRequest paging);
     }
 
     public class TicketServices : ITicketServices
@@ -145,6 +146,33 @@ namespace DataAccess.Services
                     ErrorCode = 0
                 }
             };
+        }
+
+        public async Task<BaseResponsePagingViewModel<TicketResponse>> GetTicketByTourId(int tourId, PagingRequest paging)
+        {
+            try
+            {
+                var ticket = _unitOfWork.Repository<Ticket>().GetAll()
+                    .Where(x => x.TourId == tourId)
+                    .ProjectTo<TicketResponse>(_mapper.ConfigurationProvider)
+                    .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
+                        Constants.DefaultPaging);
+
+                return new BaseResponsePagingViewModel<TicketResponse>()
+                {
+                    Metadata = new PagingsMetadata()
+                    {
+                        Page = paging.Page,
+                        Size = paging.PageSize,
+                        Total = ticket.Item1
+                    },
+                    Data = ticket.Item2.ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
