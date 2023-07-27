@@ -72,6 +72,22 @@ namespace BusTourApi.Controllers
                 return BadRequest(ex.Error);
             }
         }
+        /// <summary>
+        /// Update Bus
+        /// </summary>
+        [HttpDelete("{tourPlaceId}")]
+        public async Task<ActionResult<BaseResponseViewModel<TourPlaceResponse>>> DeleteTourPlace
+            ([FromRoute] int tourPlaceId)
+        {
+            try
+            {
+                return await _tourplaceService.DeleteTourPlace(tourPlaceId);
+            }
+            catch (ErrorResponse ex)
+            {
+                return BadRequest(ex.Error);
+            }
+        }
     }
 }
 

@@ -72,9 +72,9 @@ namespace BusTourApi.Controllers
             }
         }
         
-        [HttpPut("{surchargeId}")]
+        [HttpDelete("{surchargeId}")]
         public async Task<ActionResult<BaseResponseViewModel<SurchargeResponse>>> DeleteSurcharge
-            ([FromRoute] int surchargeId, [FromBody] UpdateSurchargeRequest request)
+            ([FromRoute] int surchargeId)
         {
             try
             {

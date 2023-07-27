@@ -20,6 +20,7 @@ namespace DataAccess.Services
         Task<BaseResponseViewModel<TourResponse>> CreateTour(CreateTourRequest request);
         Task<BaseResponseViewModel<TourResponse>> UpdateTour(int tourId, UpdateTourRequest request);
  
+        Task<BaseResponseViewModel<TourResponse>> DeleteTour(int tourId);
     }
 
     public class TourServices : ITourServices
@@ -104,11 +105,27 @@ namespace DataAccess.Services
             };
         }
 
-     
-   
+        public async Task<BaseResponseViewModel<TourResponse>> DeleteTour(int tourId)
+                 
+        {
+            var Tour = _unitOfWork.Repository<Tour>().GetById(tourId).Result;
 
-    
+            if (Tour == null)
+                throw new ErrorResponse(404, (int)ClassErrorEnums.NOT_FOUND,
+                    "Not found this Tour Place!");
 
-     
+            _unitOfWork.Repository<Tour>().Delete(Tour);
+            await _unitOfWork.CommitAsync();
+
+            return new BaseResponseViewModel<TourResponse>()
+            {
+                Status = new StatusViewModel()
+                {
+                    Message = "Success",
+                    Success = true,
+                    ErrorCode = 0
+                }
+            };
+        }
     }
 }

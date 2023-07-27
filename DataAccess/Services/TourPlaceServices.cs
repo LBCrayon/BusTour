@@ -19,6 +19,7 @@ namespace DataAccess.Services
         Task<BaseResponsePagingViewModel<TourPlaceResponse>> GetAllTourPlace(PagingRequest paging);
         Task<BaseResponseViewModel<TourPlaceResponse>> CreateTourPlace(CreateTourPlaceRequest request);
         Task<BaseResponseViewModel<TourPlaceResponse>> UpdateTourPlace(int tourPlaceId, UpdateTourPlaceRequest request);
+        Task<BaseResponseViewModel<TourPlaceResponse>> DeleteTourPlace(int tourPlaceId);
     }
 
 
@@ -92,6 +93,29 @@ namespace DataAccess.Services
 
 
             await _unitOfWork.Repository<TourPlace>().UpdateDetached(updateTourplace);
+            await _unitOfWork.CommitAsync();
+
+            return new BaseResponseViewModel<TourPlaceResponse>()
+            {
+                Status = new StatusViewModel()
+                {
+                    Message = "Success",
+                    Success = true,
+                    ErrorCode = 0
+                }
+            };
+        }
+
+        public async Task<BaseResponseViewModel<TourPlaceResponse>> DeleteTourPlace(int tourPlaceId)
+        
+        {
+            var tourPlace = _unitOfWork.Repository<TourPlace>().GetById(tourPlaceId).Result;
+
+            if (tourPlace == null)
+                throw new ErrorResponse(404, (int)ClassErrorEnums.NOT_FOUND,
+                    "Not found this Tour Place!");
+
+            _unitOfWork.Repository<TourPlace>().Delete(tourPlace);
             await _unitOfWork.CommitAsync();
 
             return new BaseResponseViewModel<TourPlaceResponse>()

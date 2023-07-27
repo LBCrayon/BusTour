@@ -23,6 +23,7 @@ namespace DataAccess.Services
 
         Task<BaseResponseViewModel<TicketResponse>> UpdateTicket(int ticketId, UpdateTicketRequest request);
         Task<BaseResponsePagingViewModel<TicketResponse>> GetTicketByTourId(int tourId, PagingRequest paging);
+        Task<BaseResponseViewModel<TicketResponse>> DeleteTicket(int ticketId);
     }
 
     public class TicketServices : ITicketServices
@@ -173,6 +174,29 @@ namespace DataAccess.Services
             {
                 throw ex;
             }
+        }
+
+        public async Task<BaseResponseViewModel<TicketResponse>> DeleteTicket(int ticketId)
+               
+        {
+            var ticket = _unitOfWork.Repository<Ticket>().GetById(ticketId).Result;
+
+            if (ticket == null)
+                throw new ErrorResponse(404, (int)ClassErrorEnums.NOT_FOUND,
+                    "Not found this Tour Place!");
+
+            _unitOfWork.Repository<Ticket>().Delete(ticket);
+            await _unitOfWork.CommitAsync();
+
+            return new BaseResponseViewModel<TicketResponse>()
+            {
+                Status = new StatusViewModel()
+                {
+                    Message = "Success",
+                    Success = true,
+                    ErrorCode = 0
+                }
+            };
         }
     }
 }
