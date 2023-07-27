@@ -24,7 +24,7 @@ namespace BusTourApi.Controllers
         /// Get list bus
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult<BaseResponsePagingViewModel<TicketResponse>>> GetAllTicket
+        public async Task<ActionResult<BaseResponsePagingViewModel<TickeGetAllResponse>>> GetAllTicket
             ([FromQuery] TicketResponse request, [FromQuery] PagingRequest paging)
         {
             try
@@ -55,19 +55,19 @@ namespace BusTourApi.Controllers
         /// <summary>
         /// Get list bus
         /// </summary>
-        [HttpGet("{tourId}")]
-        public async Task<ActionResult<BaseResponsePagingViewModel<TicketResponse>>> GetTicketByTourId
-            ([FromRoute] int tourId, [FromQuery] PagingRequest paging)
-        {
-            try
-            {
-                return await _ticketService.GetTicketByTourId(tourId, paging);
-            }
-            catch (ErrorResponse ex)
-            {
-                return BadRequest(ex.Error);
-            }
-        }
+        // [HttpGet("{tourId}")]
+        // public async Task<ActionResult<BaseResponsePagingViewModel<TicketResponse>>> GetTicketByTourId
+        //     ([FromRoute] int tourId, [FromQuery] PagingRequest paging)
+        // {
+        //     try
+        //     {
+        //         return await _ticketService.GetTicketByTourId(tourId, paging);
+        //     }
+        //     catch (ErrorResponse ex)
+        //     {
+        //         return BadRequest(ex.Error);
+        //     }
+        // }
 
         /// <summary>
         /// Create Bus

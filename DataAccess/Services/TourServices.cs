@@ -36,8 +36,10 @@ namespace DataAccess.Services
 
         public async Task<BaseResponseViewModel<TourResponse>> CreateTour(CreateTourRequest request)
         {
+            var surcharge = _unitOfWork.Repository<Surcharge>().GetById(request.SurchargeId).Result;
+            
             var tour = _mapper.Map<CreateTourRequest, Tour>(request);
-
+            tour.TotalPrice = tour.UnitPrice + surcharge.Fee;
             await _unitOfWork.Repository<Tour>().InsertAsync(tour);
             await _unitOfWork.CommitAsync();
             return new BaseResponseViewModel<TourResponse>()

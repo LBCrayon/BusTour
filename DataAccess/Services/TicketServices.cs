@@ -17,7 +17,7 @@ namespace DataAccess.Services
 {
     public interface ITicketServices
     {
-        Task<BaseResponsePagingViewModel<TicketResponse>> GetAllTicket(PagingRequest paging);
+        Task<BaseResponsePagingViewModel<TickeGetAllResponse>> GetAllTicket(PagingRequest paging);
         Task<BaseResponseViewModel<TicketResponse>> CreateTicket(CreateTicketRequest request);
         Task<TicketResponse> GetTicketById(int ticketId);
 
@@ -96,16 +96,16 @@ namespace DataAccess.Services
             }
         }
 
-        public async Task<BaseResponsePagingViewModel<TicketResponse>> GetAllTicket(PagingRequest paging)
+        public async Task<BaseResponsePagingViewModel<TickeGetAllResponse>> GetAllTicket(PagingRequest paging)
         {
             try
             {
                 {
                     var ticket = _unitOfWork.Repository<Ticket>().GetAll()
-                        .ProjectTo<TicketResponse>(_mapper.ConfigurationProvider)
+                        .ProjectTo<TickeGetAllResponse>(_mapper.ConfigurationProvider)
                         .PagingQueryable(paging.Page, paging.PageSize, Constants.LimitPaging,
                             Constants.DefaultPaging);
-                    return new BaseResponsePagingViewModel<TicketResponse>()
+                    return new BaseResponsePagingViewModel<TickeGetAllResponse>()
                     {
                         Metadata = new PagingsMetadata()
                         {

@@ -64,6 +64,7 @@ namespace BusTourApi.Mapper
             #region Ticket
 
             CreateMap<Ticket, TicketResponse>().ReverseMap();
+            CreateMap<Ticket, TickeGetAllResponse>().ReverseMap();
             CreateMap<CreateTicketRequest, Ticket>();
             CreateMap<UpdateTicketRequest, Ticket>();
             #endregion

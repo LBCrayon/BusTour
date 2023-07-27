@@ -14,10 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DAO\" />
     <Folder Include="DTO\Response\" />
     <Folder Include="DTO\Request\" />
-    <Folder Include="Repository\" />
     <Folder Include="Services\" />
     <Folder Include="Utilities\" />
     <Folder Include="Attributes\" />
